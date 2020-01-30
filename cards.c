@@ -13,7 +13,7 @@ int main()
 	do {
 		puts("Enter the card_name: ");
 		scanf("%2s", card_name);
-		int val = 0l
+		int val = 0;
 		switch(card_name[0]) {
 		case 'K':
 		case 'Q':
@@ -38,6 +38,6 @@ int main()
 			count--;
 		}
 		printf("Current count: %i\n", count);
-	} while (card_name[0]!='X')
+	} while (card_name[0]!='X');
 	return 0;
 }
