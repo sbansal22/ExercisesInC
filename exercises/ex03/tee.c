@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
     int append = 0;
     int ignore = 0;
     int diagnose = 0;
-    int default = 0;
     int count = 0;
     FILE *edit;
     
@@ -29,14 +28,6 @@ int main(int argc, char *argv[])
         switch(ch) {
             case 'a':
                 append = 1;
-            break;
-
-            case 'i':
-                ignore = 1;
-            break;
-
-            case 'p':
-                diagnose = 1;
             break;
 
             default: 
@@ -47,11 +38,12 @@ int main(int argc, char *argv[])
     argc -= optind;
     argv += optind;
 
+
     while (fgets(text, sizeof(text), stdin) != NULL) {
         for (count = 0; count < argc; count++) {
             if (append) {
-            edit = fopen(filepath,"a");
-            fprintf(edit, "%s\n",text);
+            edit = fopen(argv[count],"a");
+            fputs(text, edit);
             fclose(edit);
             }
             if (ignore) {
