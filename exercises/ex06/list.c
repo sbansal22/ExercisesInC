@@ -55,7 +55,19 @@ void print_list(Node **list) {
 */
 int pop(Node **list) {
     // FILL THIS IN!
-    return 0;
+    int ret = -1;
+    Node *next = NULL;
+
+    if (*list == NULL) {
+        return ret;
+    }
+
+    next = (*list)->next;
+    ret = (*list)->val;
+    free(*list);
+    *list = next;
+
+    return ret;
 }
 
 
@@ -66,6 +78,12 @@ int pop(Node **list) {
 */
 void push(Node **list, int val) {
     // FILL THIS IN!
+    Node * new;
+    new = (Node *) malloc(sizeof(Node));
+
+    new->val = val;
+    new->next = *list;
+    *list = new;
 }
 
 
@@ -80,9 +98,30 @@ void push(Node **list, int val) {
 */
 int remove_by_value(Node **list, int val) {
     // FILL THIS IN!
-    return 0;
-}
+    Node * current = *list;
+    Node * prev = current;
+    current = prev->next;
+    while (current != NULL){
+    
+        // Case I - when the head node value is equal
+        // to the given value
+        if (prev->val == val) {
+            *list = current;
+            // Exactly one node has been rmeoved
+            return 1;
+        }
 
+        // Case II - when a non-head node value is 
+        // equal to the given value
+        if (current->val == val){
+            prev->next = current->next;
+            return 1;
+        }
+
+    prev = current;
+    current = prev->next;
+    }   
+}
 
 /* Reverses the elements of the list.
 *
@@ -92,6 +131,22 @@ int remove_by_value(Node **list, int val) {
 */
 void reverse(Node **list) {
     // FILL THIS IN!
+    Node * current = *list;
+    Node * prev = current;
+    // Creating a node to always be next to the
+    // current node
+    Node * itercurrent = prev->next;
+    prev->next = NULL;
+    while(itercurrent != NULL){
+        // Iterating to the next node
+        current = itercurrent;
+        itercurrent = current->next;
+        // For a pair, assigning the pointer
+        // from the next node to the previous node
+        current->next = prev;
+        prev = current;
+    }
+    *list = current;
 }
 
 
