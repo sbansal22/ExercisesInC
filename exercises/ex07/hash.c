@@ -178,7 +178,16 @@ int hash_hashable(Hashable *hashable)
 */
 int equal_int (void *ip, void *jp)
 {
-    // FILL THIS IN!
+
+    // Find what is at the location of ip,jp after
+    // typcasting it to an int pointer
+    int a = *(int *)ip;
+    int b = *(int *)jp;
+
+    // Comparing the integers values stored at the
+    // location of ip and jp
+    if (a == b) return 1;
+
     return 0;
 }
 
@@ -192,7 +201,13 @@ int equal_int (void *ip, void *jp)
 */
 int equal_string (void *s1, void *s2)
 {
-    // FILL THIS IN!
+    // Typcast the given string to a character pointer
+    // Dereference the first character by adding a *
+    char **a = (char**)s1;
+    char **b = (char**)s2;
+
+    // Compare the given single character strings
+    if (strcmp(*a, *b) == 0) return 1;
     return 0;
 }
 
@@ -207,8 +222,12 @@ int equal_string (void *s1, void *s2)
 */
 int equal_hashable(Hashable *h1, Hashable *h2)
 {
-    // FILL THIS IN!
-    return 0;
+    // The input hashables are of the type Hashable,
+    // so we can use their property (Hashable->equal)
+    // here
+
+    return h1->equal(h1->key, h2->key);
+    
 }
 
 
@@ -296,7 +315,12 @@ Node *prepend(Hashable *key, Value *value, Node *rest)
 /* Looks up a key and returns the corresponding value, or NULL */
 Value *list_lookup(Node *list, Hashable *key)
 {
-    // FILL THIS IN!
+    while (list != NULL) {
+        if (list->key == key) {
+            return list-> value;
+        }
+        list = list->next;
+    }
     return NULL;
 }
 
@@ -341,15 +365,26 @@ void print_map(Map *map)
 /* Adds a key-value pair to a map. */
 void map_add(Map *map, Hashable *key, Value *value)
 {
-    // FILL THIS IN!
+    // Creates a new node with the given key and value
+    // Assigns next based on which bin the hash key 
+    // belongs
+    Node *temp = make_node(key, value, map->lists[hash_hashable(key)%map->n]);
+
+    // Updates the node list (or, the map) to contain
+    // this node at the calculated hash key location
+    map->lists[hash_hashable(key)%map->n] = temp;
+
 }
 
 
 /* Looks up a key and returns the corresponding value, or NULL. */
 Value *map_lookup(Map *map, Hashable *key)
-{
-    // FILL THIS IN!
-    return NULL;
+{   
+    // The function list_lookup takes care of whether the key
+    // is present in the corresponding list or not. If it does
+    // not, NULL will be returned.
+    return list_lookup(map->lists[hash_hashable(key)%map->n], key);
+
 }
 
 
