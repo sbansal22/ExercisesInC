@@ -9,7 +9,7 @@ glib - https://developer.ibm.com/tutorials/l-glib/#
 gnome file utilities - https://developer.gnome.org/glib/stable/glib-File-Utilities.html
 gnome error reporting - https://developer.gnome.org/glib/stable/glib-Error-Reporting.html
 gnome string utilities - https://developer.gnome.org/glib/stable/glib-String-Utility-Functions.html
-
+type conversion macros - https://developer.gnome.org/glib/stable/glib-Type-Conversion-Macros.html
 */
 
 #include <stdio.h>
@@ -42,9 +42,8 @@ gchar **splitter(gchar *filename) {
     {
         // Use file contents
         g_assert (contents != NULL);
-        return (g_strsplit(contents, " ", -1));
     }
-
+    return (g_strsplit(contents, " ", -1));
 }
 
 /* Counts the frequency of words in the text
@@ -65,15 +64,17 @@ void counter(gchar ** splitted, GHashTable *freqtable) {
          key = *key_ptr;
 
         // Iterates through the hash table to find the key
+
         // If the key is not found, set its frequency to 1
-         if (g_hash_table_lookup(freqtable, g_strdup(key)))
+         if (g_hash_table_lookup(freqtable, g_strdup(key)) == NULL)
          {
             g_hash_table_insert(freqtable, g_strdup(key), GINT_TO_POINTER(1));
          }
-         // If the key is found, increment its frequncy by 1
+
+        // If the key is found, increment its frequncy by 1
          else
          {
-		    g_hash_table_insert(freqtable, g_strdup(key), g_hash_table_lookup(freqtable, g_strdup(key)) + 1);
+            g_hash_table_insert(freqtable, g_strdup(key), g_hash_table_lookup(freqtable, g_strdup(key)) + 1);
          }
      }
 }
